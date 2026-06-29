@@ -1,60 +1,49 @@
-# ERC20 Token on Base
+# ERC20 Token Suite on Base
 
-An ERC20 token deployed on [Base](https://base.org) — Ethereum L2 by Coinbase.
+A complete ERC20 ecosystem on [Base](https://base.org).
 
-## Features
+## Contracts
 
-- ✅ ERC20 standard (transfer, approve, allowance)
-- 🔥 Burnable — token holders can burn their tokens
-- 🪙 Mintable — owner can mint up to max supply
-- 🔒 Max supply cap of 1,000,000,000 tokens
-- 👤 Ownable — mint function restricted to owner
+| Contract | Description |
+|---|---|
+| MyToken | ERC20 with mint, burn, pause |
+| TokenVesting | Linear vesting with revoke |
+| TokenAirdrop | Batch distribution |
+| TokenSale | ETH presale |
+| TokenTimeLock | Time-locked release |
 
-## Contract
-
-Built with [Foundry](https://book.getfoundry.sh/) and [OpenZeppelin](https://openzeppelin.com/contracts/).
+## Stack
+- [Foundry](https://book.getfoundry.sh/)
+- [OpenZeppelin](https://openzeppelin.com/contracts/)
+- Base (Chain ID: 8453)
 
 ## Setup
-
-```bash
-# Install Foundry
+```
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
-
-# Install dependencies
 forge install OpenZeppelin/openzeppelin-contracts
-
-# Copy env file
 cp .env.example .env
-# Fill in your PRIVATE_KEY and BASESCAN_API_KEY
 ```
 
 ## Test
-
-```bash
-forge test
+```
+forge test -v
 ```
 
-## Deploy to Base
-
-```bash
-forge script script/Deploy.s.sol \
-  --rpc-url base \
-  --broadcast \
-  --verify
+## Deploy
+```
+forge script script/DeployAll.s.sol --rpc-url base_sepolia --broadcast --verify
 ```
 
-## Deploy to Base Sepolia (testnet)
+## Docs
+- [Architecture](docs/architecture.md)
+- [Tokenomics](docs/tokenomics.md)
+- [Security](docs/security.md)
+- [Roadmap](docs/roadmap.md)
+- [FAQ](docs/faq.md)
 
-```bash
-forge script script/Deploy.s.sol \
-  --rpc-url base_sepolia \
-  --broadcast \
-  --verify
-```
+## Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
-## Network
-
-- **Base Mainnet:** https://mainnet.base.org (Chain ID: 8453)
-- **Base Sepolia:** https://sepolia.base.org (Chain ID: 84532)
-- **Explorer:** https://basescan.org
+## License
+MIT
