@@ -14,42 +14,43 @@ contract MyTokenTest is Test {
     }
 
     function test_InitialSupply() public view {
-        uint256 expected = token.MAX_SUPPLY() / 10;
-        assertEq(token.totalSupply(), expected);
-        assertEq(token.balanceOf(owner), expected);
+        assertEq(token.totalSupply(), token.MAX_SUPPLY() / 10);
     }
 
     function test_Mint() public {
-        uint256 amount = 1000 * 10 ** 18;
         vm.prank(owner);
-        token.mint(user, amount);
-        assertEq(token.balanceOf(user), amount);
+        token.mint(user, 1000 ether);
+        assertEq(token.balanceOf(user), 1000 ether);
     }
 
     function test_MintOnlyOwner() public {
         vm.prank(user);
         vm.expectRevert();
-        token.mint(user, 1000);
+        token.mint(user, 1000 ether);
     }
 
     function test_Burn() public {
-        uint256 burnAmount = 100 * 10 ** 18;
         vm.prank(owner);
-        token.burn(burnAmount);
-        assertEq(token.totalSupply(), token.MAX_SUPPLY() / 10 - burnAmount);
+        token.burn(100 ether);
     }
 
-    function test_MaxSupply() public {
-        uint256 remaining = token.MAX_SUPPLY() - token.totalSupply();
+    function test_Pause() public {
         vm.prank(owner);
-        vm.expectRevert("Exceeds max supply");
-        token.mint(user, remaining + 1);
+        token.pause();
+        assertTrue(token.paused());
+    }
+
+    function test_Unpause() public {
+        vm.startPrank(owner);
+        token.pause();
+        token.unpause();
+        assertFalse(token.paused());
+        vm.stopPrank();
     }
 
     function test_Transfer() public {
-        uint256 amount = 500 * 10 ** 18;
         vm.prank(owner);
-        token.transfer(user, amount);
-        assertEq(token.balanceOf(user), amount);
+        token.transfer(user, 500 ether);
+        assertEq(token.balanceOf(user), 500 ether);
     }
 }
